@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+        body {
+            background-color: #5b5ba1;
+        }
+        </style>
+</head>
+<body>
+    <div style="text-align: center;">
+     <h1>classes</h1>   
+    <form action="{{ url_for('processing')}}" id="mform"  method="POST">
+        {% for z in dt %}
+        <input type="radio" id="{{z}}" name="class" value="{{z}}">
+        <label for="{{z}}">{{z}}</label><br>
+        {% endfor %}   
+        <input type="submit" />
+    </form>
+    </div>
+    <div>
+        {% for x in inf %}
+            <p>{{x['_id']}}</p>
+            <p>{{x['teacher']}} :</p>
+            <p>{{x['present']}}</p>
+            <p>{{x['absent']}}</p>
+            {% endfor %}
+        </div>
+
+      
+  
+
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher signup</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+</head>
+<body>
+    <div class="center">
+        <h1>Teacher Signup</h1>
+        <form action="{{url_for('creatingteacher')}}" id="yform"  method="POST">
+            <div class="txt_field">
+                <input type="number"  name="p_id" min="100" max="999" required>
+                <label>personal id</label>
+            </div>
+            <div class="txt_field">
+                <input type="text"  name="t_name" required>
+                <label>name</label>
+            </div>
+            <div class="check" style="display: flex; align-items: center; justify-content: center;">
+                {% for z in dt %}
+                <input type="checkbox"  name="{{z}}" value="{{z}}">
+                <label >{{z}}</label>
+                {% endfor %}
+            </div>
+            <div class="txt_field">
+                <input type="password" name="pwd" required>
+                <label>password</label>
+            </div>
+            <input type="submit" />
+            <div class="signup_link">
+                <a href="{{'redirect'}}">Home</a>
+            </div>
+        </form>
+        
+
+    </div>
+    
+</body>
+</html>

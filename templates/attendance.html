@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance</title>
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <div style="text-align: center;">
+    <h2 align="center">Check attendance</h2>
+    <form action="{{ url_for('find')}}" id="myform" 
+        enctype="multipart/form-data" method="POST">
+        <label for="age">Number of classes taken:</label>
+        <input type="number" id="id_number" name="num_cls"  placeholder="0" required><br><br> 
+            <label>Classes:</label><br>
+            {% for z in dt %}
+            <input type="radio" id="{{z}}" name="class" value="{{z}}">
+            <label for="{{z}}">{{z}}</label><br>
+            {% endfor %}
+            <label>teachers:</label><br>
+            {% for j in dp %}
+            <input type="radio" id="{{j}}" name="teach" value="{{j}}">
+            <label for="{{j}}">{{j}}</label><br>
+            {% endfor %}
+            <input type="file" name="imgfile" id="imagefile"/><br><br>
+            <input type="submit" />
+    </form>
+    </div>
+    
+    <div style="text-align: center;">
+    <br><br>
+    <a href="{{'createstudent'}}">Add students</a>
+    <a href="{{'redirect'}}">Home</a><br><br>
+    </div>
+</body>
+</html>
