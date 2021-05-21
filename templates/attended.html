@@ -2,11 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Attendance</title>
-    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='attended.css')}}">
 </head>
 <body>
-    <div style="text-align: center;">
+    <div class="center">
+        <h1>PRESENT</h1>
+        {% for x in val %}
+        <h4>{{x}}</h4>
+        {% endfor %}
+
+        <h1>ABSENT</h1>
+        {% for x in vall %}
+        <h4>{{x}}</h4>
+        {% endfor %}
+        <div style="padding-top: 20px;">
+            <a href="{{'redirect'}}" class="btn btn-success" style="margin: 5px;">Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+<!-- <div style="text-align: center;">
         <p>present:</p>
         {% for x in val %}
         <p>{{x}}</p>
@@ -22,6 +44,4 @@
         <a href="{{'add'}}">Add students</a><br><br>
         <a href="{{'attendance'}}">Check Attendance</a><br><br>
         <a href="{{'redirect'}}">Home</a><br><br>
-        </div>
-</body>
-</html>
+        </div> -->

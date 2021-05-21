@@ -50,7 +50,28 @@ def login():
                 elif existing_user['role']=="student":
                     att=db[session['college_id']+"_"+existing_user['class_id']+"_attendance"]
                     x=att.find({})
-                    return render_template('studentview.html',data=existing_user,at=x)
+                    teachernames=set()
+                    print(type(x))
+                    
+                    for i in x:
+                        teachernames.add(i['teacher'])
+                    teachernames = list(teachernames)
+                    countatt=[]
+                    for i in teachernames:
+                        countatt.append(0)
+                    print(teachernames, countatt, session['personal_name'])
+                    dupli = att.find({})
+                    for i in dupli:
+                        if session['personal_name'] in i['present']:
+                            a = teachernames.index(i['teacher'])
+                            countatt[a]+=1
+                        
+                    print(countatt)
+                    
+                    
+
+
+                    return render_template('studentview.html',data=existing_user,teachernames=teachernames, countatt= countatt)
             else:
                 return render_template('login.html')
     else:

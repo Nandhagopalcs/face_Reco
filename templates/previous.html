@@ -4,35 +4,68 @@
     <meta charset="UTF-8">
     <title>Attendance</title>
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #5b5ba1;
+            background-color: black;
+            color: white; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         }
         </style>
 </head>
 <body>
-    <div style="text-align: center;">
-     <h1>classes</h1>   
-    <form action="{{ url_for('processing')}}" id="mform"  method="POST">
-        {% for z in dt %}
-        <input type="radio" id="{{z}}" name="class" value="{{z}}">
-        <label for="{{z}}">{{z}}</label><br>
-        {% endfor %}   
-        <input type="submit" />
-    </form>
+    <div style="text-align: center; ">
+        <h1>classes</h1>   
+        <form action="{{ url_for('processing')}}" id="mform"  method="POST">
+            {% for z in dt %}
+                <input type="radio" id="{{z}}" name="class" value="{{z}}">
+                <label for="{{z}}">{{z}}</label><br>
+            {% endfor %}
+            <br>   
+            <input type="submit" style="border-radius: 10%; background-color: yellow;width: 25%; height: 30px;"/>
+        </form>
     </div>
     <div>
-        {% for x in inf %}
-            <p>{{x['_id']}}</p>
-            <p>{{x['teacher']}} :</p>
-            <p>{{x['present']}}</p>
-            <p>{{x['absent']}}</p>
+        <div>
+            <hr style="border-top: 1px solid white;">
+            {% for x in inf %}
+                <h4 style="text-align: center;">Class No: {{x['_id']}}</h4>
+                <h4 style="text-align: center;">Teaher Name: {{x['teacher']}} </h4>
+                <h4 style="text-align: center;">Present</h4>
+                {% for j in x['present'] %}
+                    <p style="text-align: center;">{{j}}</p>
+                {% endfor %}
+                <h4 style="text-align: center;">Absent</h4>
+                {% for j in x['absent'] %}
+                    <p style="text-align: center;">{{j}}</p>
+                {% endfor %}
+                <hr style="border-top: 1px solid white;">
             {% endfor %}
+            
         </div>
-
+    </div>
+    <div style="display: flex; flex-direction: row;justify-content: space-around; padding-bottom: 10px;">
+        <a href="{{'redirect'}}" class="btn btn-danger" style="font-size: 20px; text-decoration: none;">home</a>
+        <a href="{{'logout'}}" class="btn btn-danger" style="font-size: 20px; text-decoration: none;">logout</a>
+        
+        
+    </div>
+        
       
   
 
 
 </body>
 </html>
+
+<!-- {% for x in inf %}
+            <p>{{x['_id']}}</p>
+            <p>{{x['teacher']}} :</p>
+            <p>present</p>
+            {% for j in x['present'] %}
+            <p>{{j}}</p>
+            {% endfor %}
+            <p>{{x['absent']}}</p>
+            {% endfor %}
+        </div>
+ -->

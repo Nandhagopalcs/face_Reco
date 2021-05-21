@@ -2,42 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Student</title>
     <meta name="viewport" content="width=device-width">
+    <title>Add Student</title>
+   
+    <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
 </head>
 <body>
-    <div style="text-align: center;">
-    <h2 align="center">Add class photo</h2>
-    <form action="{{ url_for('edit')}}" id="myform" 
-        enctype="multipart/form-data" method="POST">
-        <label for="age">Personal Id:</label>
-        <input type="number" id="id_number" name="p_id"  placeholder="00000" required><br><br>      
-        <label for="fname">Name:</label>
-        <input type="text" id="fname" name="name" placeholder="Name"><br><br>
-        {% for z in dt %}
-        <input type="radio" id="{{z}}" name="class" value="{{z}}">
-        <label for="{{z}}">{{z}}</label><br>
-        {% endfor %}
-        <input type="file" name="imagefile" id="imagefile"/><br><br>
-        <label for="pwd">Password:</label>
-        <input type="password" id="pwd" name="pwd"><br><br>
-        <input type="submit" />
-    </form>
-    </div>
-    <div style="text-align: center;">
-    {%  if st %}
-    <p>image successfully updated </p>
-    <p>{{val_name}}</p>
-    {% endif %}
-    </div>
-    <div>
-        
-    </div>
-    <div style="text-align: center;">
-    <br><br>
-    <a href="{{'attendance'}}">Check Attendance</a>
-    <a href="{{'redirect'}}">Home</a><br><br>
+    
+    <div class="center" style=" padding-bottom: 15px;">
+        <h1>Edit Student</h1>
+        <form action="{{ url_for('edit')}}" enctype="multipart/form-data" method="POST">
+            <div class="txt_field">
+                <input type="number"  name="p_id"  required>
+                <label>Personal Id</label>
+            </div>
+            <div class="txt_field">
+                <input type="text"  name="name"  required>
+                <label>Name</label>
+            </div>
+            {% for z in dt %}
+            <input type="radio"  name="class" value="{{z}}">
+            <label >{{z}}</label>
+            {% endfor %}
+            <div class = "classfile" style="display: flex; align-items: center; justify-content: center;padding-top: 15px;">
+                <input type="file" name="imagefile" >
+            </div>
+            <div class="txt_field">
+                <input type="password" name="pwd" required>
+                <label>password</label>
+            </div>
+            <input type="submit" /> 
+            <div style="display: flex; flex-direction: row;justify-content: space-around;">
+                    <a href="{{'redirect'}}">home</a>
+                    <a href="{{'logout'}}">logout</a>
+            </div>
+            
+        </form>
+
     </div>
 
+    <div style="text-align: center;">
+    {%  if st %}
+    <h3 style="color: green;">image successfully updated </h3>
+    <h3 style="color: green;">{{val_name}}</h3>
+    {% endif %}
+    </div>
+    
+.
 </body>
 </html>

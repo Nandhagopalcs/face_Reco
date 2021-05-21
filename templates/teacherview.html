@@ -13,9 +13,9 @@
         <h1>Welcome {{data['name'] | safe }} </h1>
         <hr>
         <br>
-        <div class="container">
+        <div class="container" >
             <div class="row">
-                <div class="col">
+                <div class="col" style="display: flex; justify-content: center;">
                     <div class="card" style="width: 18rem;">
                         <img src="https://images.unsplash.com/photo-1599508704512-2f19efd1e35f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=675&q=80" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -26,29 +26,39 @@
 
 
                 <div class="col">
-                    <div class="colclass">
+                    <div class="colclass" style="background: #FAF0E6; border-radius: 20px; margin-top: 10px;">
                         <div class="row">
                             <div class="col">
-                                <h3>Name: {{data['name'] | safe }}</h3>
+                                <h3 style="text-align: center;">Name: {{data['name'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Role: {{data['role'] | safe }}</h3>
+                                <h3 style="text-align: center;">Role: {{data['role'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Collage ID: {{data['c_id'] | safe }}</h3>
+                                <h3 style="text-align: center;">Collage ID: {{data['c_id'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Collage Name: {{data['c_name'] | safe }}</h3>
+                                <h3 style="text-align: center;">Collage Name: {{data['c_name'] | safe }}</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <h3 style="text-align: center;">class: </h3>
+                                {% for x in cl %}
+                                <h4 style="text-align: center;">{{x['class_name']}}</h4>      
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-
+                </div>
+            </div>
                     <hr>
 
                     <h2>Functions</h2>
@@ -56,13 +66,23 @@
                         <div class="col d-flex p-2">
                             <a href="{{'createstudent'}}" class="btn btn-success">Add Student</a>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col d-flex p-2">
                             <a href="{{'attendance'}}" class="btn btn-warning">Check Attendence</a>
                         </div>
+                        <div class="col d-flex p-2">
+                            <a href="{{'previous'}}" class="btn btn-light">Previous</a>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col d-flex p-2">
+                            <a href="{{'updateatt'}}" class="btn btn-dark">Update</a>
+                        </div>
+                        <div class="col d-flex p-2">
+                            <a href="{{'editing'}}" class="btn btn-danger">Edit Student</a>
+                        </div>
+                    </div>
+
+                    
                     <hr>
                     <div class="row">
                         <div class="col d-flex p-2">
@@ -82,16 +102,9 @@
         </div>
 
     </div>
-    <a href="{{'previous'}}">previous</a>
-    <a href="{{'updateatt'}}">update</a>
-    <a href="{{'editing'}}">edit Student</a>
+    
 
-    </div>
-    <div>
-      {% for x in cl %}
-          <p>{{x['class_name']}}</p>      
-      {% endfor %}
-      </div>
+    
 
 
 </body>

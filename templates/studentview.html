@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Student</title>
     <link rel="stylesheet" href="{{url_for('static', filename='admin.css')}}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
-<body>
+<body style="min-height:100vh">
     <div class = "center">
         <h1>Welcome {{data['name'] | safe }} </h1>
         <hr>
-        <br>
+
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -25,39 +26,40 @@
                 </div>
 
 
-                <div class="col " >
-                    <div class="colclass">
+                <div class="col ">
+                    <div class="colclass" style="background: #FAF0E6; border-radius: 20; margin-top: 10px;">
                         <div class="row">
                             <div class="col">
-                                <h3>Name: {{data['name'] | safe }}</h3>
+                                <h3 style="text-align: center;">Name: {{data['name'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Role: {{data['role'] | safe }}</h3>
+                                <h3 style="text-align: center;">Role: {{data['role'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Collage ID: {{data['c_id'] | safe }}</h3>
+                                <h3 style="text-align: center;">Collage ID: {{data['c_id'] | safe }}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>Collage Name: {{data['c_name'] | safe }}</h3>
+                                <h3 style="text-align: center;">Collage Name: {{data['c_name'] | safe }}</h3>
                             </div>
                         </div>
                     </div>
 
                     <hr>
 
-                    <h2>Functions</h2>
+                    <h2>Attendance</h2>
+                    <div style="background: white;">
+                   
+                    <canvas id="myChart" width="100%" height="30"></canvas>
+                    </div>
+
+
                     
-
-                    <p>your attendece here!</p>
-
-
-
                     <hr>
                     <div class="row">
                         <div class="col d-flex p-2">
@@ -78,14 +80,34 @@
 
     </div>
     <div>
-        {% for x in at %}
+        <!-- {% for x in at %}
             <p>{{x['teacher']}} :</p>
           {%if data['personal_name'] in x['present']%}    
             <p>present</p>
             {% else %}
             <p>absent</p>
            {% endif%}
-            {% endfor %}
+            {% endfor %} -->
         </div>
 </body>
+<script >
+    var xValues = {{ teachernames | safe }};
+    var yValues = {{ countatt | safe }};
+    var barColors = ["yellow", "green","blue","orange","brown"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+    }]
+  },
+  
+});
+
+</script>
+
+    
 </html>
