@@ -10,7 +10,7 @@
 <body>
     <div class="center">
         <h1>Teacher Signup</h1>
-        <form action="{{url_for('creatingteacher')}}" id="yform"  method="POST">
+        <form action="{{url_for('creatingteacher')}}" id="yform" enctype="multipart/form-data" method="POST">
             <div class="txt_field">
                 <input type="number"  name="p_id" min="100" max="999" required>
                 <label>personal id</label>
@@ -29,6 +29,10 @@
                 <input type="password" name="pwd" required>
                 <label>password</label>
             </div>
+            <div class="txt_field">
+                <input type="file" name="imagefile" >
+            </div>
+            
             <input type="submit" />
             <div class="signup_link">
                 <a href="{{'redirect'}}">Home</a>
@@ -37,6 +41,13 @@
         
 
     </div>
-   . 
+    <div>
+        {% if  kkk==1%}
+    	<h3> Existing  personal Id</h3>
+        {% endif %}
+    </div>
+    
+  .  
+   
 </body>
 </html>

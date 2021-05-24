@@ -31,6 +31,8 @@
             {% for x in inf %}
                 <h4 style="text-align: center;">Class No: {{x['_id']}}</h4>
                 <h4 style="text-align: center;">Teaher Name: {{x['teacher']}} </h4>
+                <h4 style="text-align: center;">Date: {{x['date']}} </h4>
+
                 <h4 style="text-align: center;">Present</h4>
                 {% for j in x['present'] %}
                     <p style="text-align: center;">{{j}}</p>

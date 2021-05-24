@@ -6,6 +6,8 @@ import cv2
 import os
 from werkzeug.utils import secure_filename
 import pymongo
+from datetime import date
+
 
 client = pymongo.MongoClient("mongodb+srv://nandhu:hinandhu100@cluster0.q49fb.mongodb.net/attendance?retryWrites=true&w=majority")
 db = client['attendance']
@@ -19,6 +21,10 @@ app.secret_key="hi"
 
 @app.route('/')
 def home():
+    return render_template('landing.html')
+
+@app.route("/firstlog")
+def firstlog():
     return render_template('login.html')
 
 @app.route("/logging", methods=['GET', 'POST'])
@@ -68,10 +74,10 @@ def login():
                         
                     print(countatt)
                     
-                    
+                    dupli = att.find({})
 
 
-                    return render_template('studentview.html',data=existing_user,teachernames=teachernames, countatt= countatt)
+                    return render_template('studentview.html',data=existing_user,teachernames=teachernames, countatt= countatt,at=dupli)
             else:
                 return render_template('login.html')
     else:
@@ -93,7 +99,26 @@ def redirect():
     elif existing_user['role']=="student":
             att=db[session['college_id']+"_"+existing_user['class_id']+"_attendance"]
             x=att.find({})
-            return render_template('studentview.html',data=existing_user,at=x)
+            teachernames=set()
+            print(type(x))
+            
+            for i in x:
+                teachernames.add(i['teacher'])
+            teachernames = list(teachernames)
+            countatt=[]
+            for i in teachernames:
+                countatt.append(0)
+                   
+            dupli = att.find({})
+            for i in dupli:
+                if session['personal_name'] in i['present']:
+                        a = teachernames.index(i['teacher'])
+                        countatt[a]+=1
+                        
+            print(countatt)
+                    
+            return render_template('studentview.html',data=existing_user,teachernames=teachernames, countatt= countatt)
+            
 
 
 @app.route('/signup')
@@ -110,8 +135,28 @@ def sigup():
         c_name = req.get("c_name")
         passw = req.get("pwd")
         role=str("admin")
-        past = {"_id": a_id,"name":a_name,"c_id":c_id,"c_name":c_name,"password":passw,"role":role}
         log=db['login']
+        existing_user = log.find_one(({"_id":a_id}))
+        try_user = log.find_one(({"c_id":c_id}))
+        
+        if existing_user is not  None:
+            if try_user is not None:
+                return render_template('signup.html',kk=1,kkk=1)
+                
+        if existing_user is not  None:
+            return render_template('signup.html',kk=0,kkk=1)
+        
+        if try_user is not None:
+            return render_template('signup.html',kk=1,kkk=0)
+
+        image = request.files['imagefile']
+        basepath = os.path.dirname(__file__)
+        image.filename=a_id+".jpg"
+        file_path = os.path.join(basepath, 'static', secure_filename(image.filename))
+        image.save(file_path)
+
+        past = {"_id": a_id,"name":a_name,"c_id":c_id,"c_name":c_name,"password":passw,"role":role,"image":image.filename}
+
         log.insert_one(past)
         return render_template('login.html')
     else:
@@ -129,8 +174,22 @@ def creatingclass():
         req = request.form
         class_id = req.get("class_id")
         class_name = req.get("class_name")
-        post={"_id": class_id,"class_name":class_name}
         infoc=db[session['college_id']+"_classes"]
+        existing_user = infoc.find_one(({"_id":class_id}))
+        try_user=infoc.find_one(({"class_name":class_name}))
+        
+        if existing_user is not  None:
+            if try_user is not None:
+                return render_template('class.html',kk=1,kkk=1)
+                
+        if existing_user is not  None:
+            return render_template('class.html',kk=0,kkk=1)
+        
+        if try_user is not None:
+            return render_template('class.html',kk=1,kkk=0)
+
+        post={"_id": class_id,"class_name":class_name}
+        
         infoc.insert_one(post)
         return render_template('class.html')
     else:
@@ -144,7 +203,7 @@ def createteacher():
     cd=[]
     for y in x:
         cd.append(y['class_name'])
-    return render_template('teacheradd.html',dt=cd)
+    return render_template('teacheradd.html',dt=cd,kkk=0)
 
 @app.route('/creatingteacher',methods=['GET','POST'])
 def creatingteacher():
@@ -162,14 +221,25 @@ def creatingteacher():
             if i in credent:
                 ls.append(credent[i])
         
+        try_user = log.find_one(({"_id":credent['p_id']}))
+        
+        if try_user is not None:
+            return render_template('teacheradd.html',dt=k,kkk=1)
+        
+        image = request.files['imagefile']
+        basepath = os.path.dirname(__file__)
+        image.filename=credent['p_id']+".jpg"
+        file_path = os.path.join(basepath, 'static', secure_filename(image.filename))
+        image.save(file_path)
+        
         pt={"_id":credent['p_id'],"name":credent['t_name'],"college_id":session['college_id'],"college_name":session['college_name'],"password":credent['pwd'],"classes":ls}
         infot=db[session['college_id']+"_teachers"]
         infot.insert_one(pt)
         lg=db['login']
-        p={"_id":credent['p_id'],"name":credent['t_name'],"c_id":session['college_id'],"c_name":session['college_name'],"password":credent['pwd'],"role":str("teacher")}
+        p={"_id":credent['p_id'],"name":credent['t_name'],"c_id":session['college_id'],"c_name":session['college_name'],"password":credent['pwd'],"role":str("teacher"),"image":image.filename}
         lg.insert_one(p)
 
-        return render_template('teacheradd.html',dt=k)
+        return render_template('teacheradd.html',dt=k,kkk=0)
 
 
 
@@ -190,9 +260,22 @@ def creating():
         name=credent['name']
         clas=credent['class']
         pwd=credent['pwd']
+        l=db['login']
+
+        try_user = l.find_one(({"_id":credent['p_id']}))
+        
+        if try_user is not None:
+            data=db[session['college_id']+"_classes"]
+            x=data.find({})
+            cd=[]
+            for y in x:
+                cd.append(y['class_name'])
+            return render_template('add.html',dt=cd,ex=1)
+
         
         image = request.files['imagefile']
         basepath = os.path.dirname(__file__)
+        image.filename=p_id+".jpg"
         file_path = os.path.join(basepath, 'static', secure_filename(image.filename))
         image.save(file_path)
         print(file_path)
@@ -200,13 +283,13 @@ def creating():
         
         encode = face_recognition.face_encodings(img)
         enc=list(encode.pop())
-        l=db['login']
+        
         
         check=db[session['college_id']+"_classes"]        
         existing_user = check.find_one(({"class_name":clas}))
 
         infocs=db[session['college_id']+"_"+existing_user['_id']]
-        post = {"_id": p_id,"name":name,"c_id":session['college_id'],"c_name":session['college_name'],"password":pwd,"role":"student","class_id":existing_user['_id']}
+        post = {"_id": p_id,"name":name,"c_id":session['college_id'],"c_name":session['college_name'],"password":pwd,"role":"student","class_id":existing_user['_id'],"image":image.filename}
         pot = {"_id": p_id, "name":name,"encode":enc,"c_id":session['college_id'],"c_name":session['college_name'],"password":pwd,"class_id":existing_user['_id'],"class_name":clas}
         infocs.insert_one(pot)
         l.insert_one(post)
@@ -278,10 +361,13 @@ def find():
         for a in classNames:
             if a not in present:
                 absent.append(a)
+        
+        today = date.today()
+        d1 = today.strftime("%d/%m/%Y")
     
         coll=db[session['college_id']+"_"+existing_user['_id']+"_attendance"]
         
-        postp = {"_id":clsno,"teacher":tr,"present":present,"absent":absent}
+        postp = {"_id":clsno,"date":d1,"teacher":tr,"present":present,"absent":absent}
         coll.insert_one(postp)
 
         os.remove(file_path)
@@ -418,5 +504,45 @@ def edit():
 
 
 
-if __name__ == "__main__":
+@app.route('/file',methods=['GET','POST'])
+def file():
+    dat=db[session['college_id']+"_teachers"]
+    tr=[]
+    y=dat.find({})
+    for i in y:
+        tr.append(i['name'])
+    return render_template('complaint.html',dp=tr)
+
+    
+
+
+@app.route('/complaint',methods=['GET','POST'])
+def complaint():
+    if request.method =='POST':
+        req = request.form
+        t_name = req.get("teach")
+        complaint = req.get("complaint")
+        dat=db[session['college_id']+"_complaint"]
+        today = date.today()
+        d1 = today.strftime("%d/%m/%Y")
+
+        postp = {"teacher":t_name,"date":d1,"compaint":complaint,"student":session['personal_name']}
+        dat.insert_one(postp)
+        datt=db[session['college_id']+"_teachers"]
+        tr=[]
+        y=datt.find({})
+        for i in y:
+            tr.append(i['name'])    
+    return render_template('complaint.html',dp=tr,c=1)
+
+@app.route('/view',methods=['GET','POST'])
+def view():
+    dat=db[session['college_id']+"_complaint"]
+    copy = dat.find(({"teacher":session['personal_name']}))
+    return render_template('complaintview.html',information=copy)
+
+   
+
+
+if __name__ == '__main__':
     app.run(debug=True)

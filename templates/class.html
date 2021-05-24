@@ -12,7 +12,7 @@
         <h1>Create Class</h1>
         <form action="{{url_for('creatingclass')}}" id="yform"  method="POST">
             <div class="txt_field">
-                <input type="number"  name="class_id" min = "100" max="999" required>
+                <input type="number"  name="class_id"  required>
                 <label>class id</label>
             </div>
             <div class="txt_field">
@@ -27,6 +27,21 @@
         
         </form>
 
+    </div>
+    <div>
+        {% if kk==1 and kkk==1 %}
+    	<h3> Existing Class Name and class Id</h3>
+        {% endif%}
+    </div>
+    .<div>
+        {% if kk==1 and kkk==0 %}
+    	<h3> Existing class Name</h3>
+        {% endif %}
+    </div>
+    <div>
+        {% if  kkk==1 and kk==0 %}
+    	<h3> Existing  class Id</h3>
+        {% endif %}
     </div>
     
     .

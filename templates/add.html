@@ -12,7 +12,7 @@
         <h1>Student Signup</h1>
         <form action="{{ url_for('creating')}}" id="myform" enctype="multipart/form-data" method="POST">
             <div class="txt_field">
-                <input type="number"  name="p_id" min="100" max="999" required>
+                <input type="number"  name="p_id"  required>
                 <label>personal id</label>
             </div>
             <div class="txt_field">
@@ -21,7 +21,7 @@
             </div>
             <div class="check" style="display: flex; align-items: center; justify-content: center;">
                 {% for z in dt %}
-                <input type="checkbox"  name="class" value="{{z}}">
+                <input type="radio"  name="class" value="{{z}}" required>
                 <label style="font-size: 16px;">{{z}}</label>
                 {% endfor %}
             </div>
@@ -51,9 +51,13 @@
     {% endif %}
     </div>
    
-.
+    <div>
+        {% if ex==1 %}
+    	<h3> Existing  personal Id</h3>
+        {% endif %}
+    </div>
         
+    .
 
-    
 </body>
 </html>
