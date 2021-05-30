@@ -16,13 +16,15 @@
                 <th>Name</th>
                 <th>change</th>
               </tr>
-              <tr>
                 {% for x in val %}
-                    <td>{{x}}</td>
-                    <td><button style="background-color: red ;border-radius: 10%;">mark absent</button></td>
+                    <tr>
                 
+                        <td>{{x}}</td>
+                        <td><button style="background-color: red ;border-radius: 10%;">mark absent</button></td>
+                
+                
+                    </tr>
                 {% endfor %}  
-              </tr>
     
         </table>
 
