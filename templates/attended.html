@@ -4,22 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>attended</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='attended.css')}}">
 </head>
 <body>
     <div class="center">
-        <h1>PRESENT</h1>
-        {% for x in val %}
-        <h4>{{x}}</h4>
-        {% endfor %}
+        <h1 style="margin-top: 20px;">Present</h1>
+        <table class="table table-dark table-striped table-hover" style="margin: 0 auto;text-align: center;max-width: 80%; margin-bottom: 25px;">
+            <tr>
+                <th>Name</th>
+                <th>change</th>
+              </tr>
+              <tr>
+                {% for x in val %}
+                    <td>{{x}}</td>
+                    <td><button style="background-color: red ;border-radius: 10%;">mark absent</button></td>
+                
+                {% endfor %}  
+              </tr>
+    
+        </table>
+
+
+
 
         <h1>ABSENT</h1>
-        {% for x in vall %}
-        <h4>{{x}}</h4>
-        {% endfor %}
+        <table class="table table-striped table-hover" style="margin: 0 auto;text-align: center; max-width: 80%">
+            <tr>
+                <th>Name</th>
+                <th>change</th>
+            </tr>
+            {% for x in vall %}
+                <tr>
+                
+                    <td>{{x}}</td>
+                    <td><button style="background-color: greenyellow; border-radius: 10%;">mark present</button></td>
+                
+                
+                </tr>
+            {% endfor %}  
+    
+        </table>
+
+
+        
         <div style="padding-top: 20px;">
-            <a href="{{'redirect'}}" class="btn btn-success" style="margin: 5px;">Home</a>
+            <a href="{{'redirect'}}" class="btn btn-info" style="margin: 5px; ">Home</a>
         </div>
     </div>
 
